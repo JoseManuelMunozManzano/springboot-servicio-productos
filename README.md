@@ -2,7 +2,7 @@
 Es un ejemplo de microservicio pero por ahora usando solo REST.
 La idea es que se comunique con otro microservicio de items.
 
-Usando RestTemplate
+Usando RestTemplate y Ribbon
 https://github.com/JoseManuelMunozManzano/spring-boot-servicio-items
 
 Usando Feign y Ribbon
