@@ -3,7 +3,7 @@ package com.jmunoz.springboot.app.productos.controllers;
 import com.jmunoz.springboot.app.productos.models.entity.Producto;
 import com.jmunoz.springboot.app.productos.models.service.IProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,9 +16,10 @@ import java.util.stream.Collectors;
 @RestController
 public class ProductoController {
 
-    // El puerto lo tenemos mediante el componente de Spring Environment
-    @Autowired
-    private Environment env;
+    // Usando @Value para obtener el puerto de forma más sencilla
+    // Inyecta valores que tenemos configurados en los properties
+    @Value("${server.port}")
+    private Integer port;
 
     @Autowired
     private IProductoService productoService;
@@ -27,7 +28,7 @@ public class ProductoController {
     @GetMapping("/listar")
     public List<Producto> listar() {
         return productoService.findAll().stream().map(p -> {
-            p.setPort(Integer.parseInt(env.getProperty("local.server.port")));
+            p.setPort(port);
             return p;
         }).collect(Collectors.toList());
     }
@@ -35,7 +36,7 @@ public class ProductoController {
     @GetMapping("/ver/{id}")
     public Producto detalle(@PathVariable Long id) {
         Producto producto = productoService.findById(id);
-        producto.setPort(Integer.parseInt(env.getProperty("local.server.port")));
+        producto.setPort(port);
         return producto;
     }
 }
